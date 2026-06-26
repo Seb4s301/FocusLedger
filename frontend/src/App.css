@@ -1,0 +1,91 @@
+/* Estilos globales de FocusLedger */
+:root {
+  /* Fondo (base del sistema) */
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #141414;
+  --bg-surface: #1A1A1A;
+
+  /* Verde (color principal) */
+  --color-primary: #006400;
+  --color-primary-hover: #004d00;
+  --color-primary-active: #003300;
+
+  /* Rojo vino (sombras y acentos) */
+  --color-accent: #922B3E;
+  --color-accent-soft: #6E1F2D;
+  --color-shadow: rgba(146, 43, 62, 0.35);
+
+  /* Texto (clave para que no se vea apagado) */
+  --text-main: #F5F5F5;
+  --text-secondary: #BFBFBF;
+  --text-disabled: #737373;
+
+  /* Bordes y divisores */
+  --border-color: #2C2C2C;
+  --divider-color: #262626;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* =========================================
+   ANIMACIONES, SOMBRAS Y ESTADOS INTERACTIVOS
+   ========================================= */
+
+/* Botones: animaciones de elevación y hover dinámico */
+button {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(146, 43, 62, 0.3);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px var(--color-shadow);
+  filter: brightness(1.2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  filter: brightness(0.95);
+}
+
+/* Tarjetas y contenedores principales: efecto hover sutil */
+section, 
+div[style*="var(--bg-surface)"] {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+section:hover,
+div[style*="var(--bg-surface)"]:hover {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 0 12px 0 rgba(0, 100, 0, 0.05);
+}
+
+/* Entradas de formulario: efectos de focus */
+input, select, textarea {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(0, 100, 0, 0.3) !important;
+}
