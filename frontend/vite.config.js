@@ -5,7 +5,7 @@ const repoName = 'FocusLedger';
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: mode === 'production' ? `/${repoName}/` : '/',
+  base: '/FocusLedger/',
   build: {
     outDir: 'dist',
     sourcemap: false,
