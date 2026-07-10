@@ -98,23 +98,61 @@ function Finances() {
       <h1 style={{ marginBottom: 24 }}>Finanzas</h1>
 
       {/* Formulario de nueva transacción */}
-      <section style={{ background: 'var(--bg-secondary)', borderRadius: 8, padding: 24, marginBottom: 32, border: '1px solid var(--border-color)' }}>
-        <h2 style={{ marginTop: 0, marginBottom: 16, fontSize: 18 }}>Nueva transacción</h2>
+      <section style={{ background: 'var(--bg-surface)', borderRadius: 12, padding: 24, marginBottom: 32, border: '1px solid var(--border-color)' }}>
+        <h2 style={{ marginTop: 0, marginBottom: 20, fontSize: 18, fontWeight: 600 }}>Nueva transacción</h2>
 
         <form onSubmit={handleSubmit}>
           {formError && (
             <div
               role="alert"
-              style={{ color: 'var(--color-accent)', background: 'var(--color-shadow)', border: '1px solid var(--color-accent)', borderRadius: 4, padding: '8px 12px', marginBottom: 16 }}
+              style={{ color: 'var(--color-accent)', background: 'var(--color-shadow)', border: '1px solid var(--color-accent)', borderRadius: 6, padding: '8px 12px', marginBottom: 16, fontSize: 14 }}
             >
               {formError}
             </div>
           )}
 
+          {/* Switch Ingreso / Egreso */}
+          <div style={{ marginBottom: 20 }}>
+            <div
+              onClick={() => setForm(prev => ({ ...prev, type: prev.type === 'income' ? 'expense' : 'income' }))}
+              style={{
+                display: 'inline-flex',
+                background: 'var(--bg-secondary)',
+                borderRadius: 8,
+                padding: 3,
+                cursor: 'pointer',
+                border: '1px solid var(--border-color)',
+              }}
+            >
+              <span style={{
+                padding: '6px 20px',
+                borderRadius: 6,
+                fontWeight: 600,
+                fontSize: 14,
+                background: form.type === 'income' ? 'var(--color-primary)' : 'transparent',
+                color: form.type === 'income' ? '#fff' : 'var(--text-secondary)',
+                transition: 'all 0.15s',
+              }}>
+                Ingreso
+              </span>
+              <span style={{
+                padding: '6px 20px',
+                borderRadius: 6,
+                fontWeight: 600,
+                fontSize: 14,
+                background: form.type === 'expense' ? 'var(--color-accent)' : 'transparent',
+                color: form.type === 'expense' ? '#fff' : 'var(--text-secondary)',
+                transition: 'all 0.15s',
+              }}>
+                Egreso
+              </span>
+            </div>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 16 }}>
             {/* Monto */}
             <div>
-              <label htmlFor="amount" style={{ display: 'block', marginBottom: 4, fontWeight: 500, color: 'var(--text-secondary)' }}>
+              <label htmlFor="amount" style={{ display: 'block', marginBottom: 4, fontWeight: 500, fontSize: 13, color: 'var(--text-secondary)' }}>
                 Monto *
               </label>
               <input
@@ -126,14 +164,14 @@ function Finances() {
                 value={form.amount}
                 onChange={handleChange}
                 required
-                style={{ width: '100%', padding: '8px 10px', borderRadius: 4, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box', fontSize: 14 }}
                 placeholder="0.00"
               />
             </div>
 
             {/* Categoría */}
             <div>
-              <label htmlFor="category" style={{ display: 'block', marginBottom: 4, fontWeight: 500, color: 'var(--text-secondary)' }}>
+              <label htmlFor="category" style={{ display: 'block', marginBottom: 4, fontWeight: 500, fontSize: 13, color: 'var(--text-secondary)' }}>
                 Categoría *
               </label>
               <select
@@ -142,7 +180,7 @@ function Finances() {
                 value={form.category}
                 onChange={handleChange}
                 required
-                style={{ width: '100%', padding: '8px 10px', borderRadius: 4, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box', fontSize: 14 }}
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -152,7 +190,7 @@ function Finances() {
 
             {/* Fecha */}
             <div>
-              <label htmlFor="date" style={{ display: 'block', marginBottom: 4, fontWeight: 500, color: 'var(--text-secondary)' }}>
+              <label htmlFor="date" style={{ display: 'block', marginBottom: 4, fontWeight: 500, fontSize: 13, color: 'var(--text-secondary)' }}>
                 Fecha *
               </label>
               <input
@@ -162,13 +200,13 @@ function Finances() {
                 value={form.date}
                 onChange={handleChange}
                 required
-                style={{ width: '100%', padding: '8px 10px', borderRadius: 4, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box', fontSize: 14 }}
               />
             </div>
 
             {/* Descripción */}
             <div>
-              <label htmlFor="description" style={{ display: 'block', marginBottom: 4, fontWeight: 500, color: 'var(--text-secondary)' }}>
+              <label htmlFor="description" style={{ display: 'block', marginBottom: 4, fontWeight: 500, fontSize: 13, color: 'var(--text-secondary)' }}>
                 Descripción (opcional)
               </label>
               <input
@@ -177,54 +215,29 @@ function Finances() {
                 type="text"
                 value={form.description}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '8px 10px', borderRadius: 4, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box', fontSize: 14 }}
                 placeholder="Descripción opcional"
               />
             </div>
-          </div>
-
-          {/* Tipo */}
-          <div style={{ marginBottom: 16 }}>
-            <span style={{ fontWeight: 500, marginRight: 16 }}>Tipo *</span>
-            <label style={{ marginRight: 16, cursor: 'pointer' }}>
-              <input
-                type="radio"
-                name="type"
-                value="income"
-                checked={form.type === 'income'}
-                onChange={handleChange}
-                style={{ marginRight: 6 }}
-              />
-              Ingreso
-            </label>
-            <label style={{ cursor: 'pointer' }}>
-              <input
-                type="radio"
-                name="type"
-                value="expense"
-                checked={form.type === 'expense'}
-                onChange={handleChange}
-                style={{ marginRight: 6 }}
-              />
-              Egreso
-            </label>
           </div>
 
           <button
             type="submit"
             disabled={loading}
             style={{
-              background: 'var(--color-primary)',
+              background: form.type === 'income' ? 'var(--color-primary)' : 'var(--color-accent)',
               color: '#fff',
               border: 'none',
-              borderRadius: 4,
+              borderRadius: 8,
               padding: '10px 24px',
-              fontSize: 15,
+              fontSize: 14,
+              fontWeight: 600,
               cursor: loading ? 'not-allowed' : 'pointer',
               opacity: loading ? 0.7 : 1,
+              transition: 'background 0.15s',
             }}
           >
-            {loading ? 'Guardando...' : 'Agregar transacción'}
+            {loading ? 'Guardando...' : `Agregar ${form.type === 'income' ? 'ingreso' : 'egreso'}`}
           </button>
         </form>
       </section>

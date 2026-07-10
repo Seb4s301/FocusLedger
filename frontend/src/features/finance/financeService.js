@@ -20,7 +20,9 @@ export async function createTransaction({ amount, category, type, date, descript
     return { data: null, error: { message: 'La fecha es requerida.' } };
   }
 
-  const payload = { amount, category: category.trim(), type, date };
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const payload = { amount, category: category.trim(), type, date, user_id: user.id };
   if (description && description.trim() !== '') {
     payload.description = description.trim();
   }

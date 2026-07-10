@@ -18,9 +18,11 @@ export async function createNote({ content }) {
     return { data: null, error: { message: 'El contenido de la nota no puede estar vacío.' } };
   }
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from('notes')
-    .insert({ content: content.trim() })
+    .insert({ content: content.trim(), user_id: user.id })
     .select()
     .single();
 

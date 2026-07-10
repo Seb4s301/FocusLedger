@@ -23,6 +23,8 @@ export async function startSession({ taskId, plannedDuration }) {
     };
   }
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from('focus_sessions')
     .insert({
@@ -30,6 +32,7 @@ export async function startSession({ taskId, plannedDuration }) {
       planned_duration: plannedDuration,
       status: 'active',
       started_at: new Date().toISOString(),
+      user_id: user.id,
     })
     .select()
     .single();
@@ -81,12 +84,15 @@ export async function endSession(sessionId, actualDuration) {
 
   // 3. Insertar time_log (solo si la duración es > 0)
   if (actualDuration > 0) {
+    const { data: { user } } = await supabase.auth.getUser();
+
     const { error: logError } = await supabase
       .from('time_logs')
       .insert({
         session_id: sessionId,
         task_id: session.task_id,
         duration_min: actualDuration,
+        user_id: user.id,
       });
 
     if (logError) {

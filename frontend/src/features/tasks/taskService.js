@@ -10,7 +10,9 @@ export async function createProject({ name, description }) {
     return { data: null, error: { message: 'El nombre del proyecto es requerido.' } };
   }
 
-  const payload = { name: name.trim() };
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const payload = { name: name.trim(), user_id: user.id };
   if (description && description.trim() !== '') {
     payload.description = description.trim();
   }
@@ -56,9 +58,12 @@ export async function createTask({ name, projectId, parentTaskId }) {
     return { data: null, error: { message: 'El nombre de la tarea es requerido.' } };
   }
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const payload = {
     name: name.trim(),
     project_id: projectId,
+    user_id: user.id,
   };
 
   if (parentTaskId) {
@@ -120,12 +125,15 @@ export async function createSubtask({ name, parentTaskId }) {
     return { data: null, error: { message: 'No se encontró la tarea padre.' } };
   }
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from('tasks')
     .insert({
       name: name.trim(),
       parent_task_id: parentTaskId,
       project_id: parentTask.project_id,
+      user_id: user.id,
     })
     .select()
     .single();
