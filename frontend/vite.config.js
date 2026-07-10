@@ -1,11 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const repoName = 'FocusLedger';
-
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: '/FocusLedger/',
+  base: '/',
   build: {
     outDir: 'dist',
     sourcemap: false,
