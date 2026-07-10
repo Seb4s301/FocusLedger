@@ -2,4 +2,4 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python -m flask --app src.app run --host=0.0.0.0 --port=$PORT"
+startCommand = "gunicorn --bind 0.0.0.0:$PORT app:app"
