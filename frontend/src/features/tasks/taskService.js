@@ -1,5 +1,8 @@
 import { supabase } from '../../lib/supabase.js';
 
+const MAX_NAME_LENGTH = 200;
+const MAX_DESCRIPTION_LENGTH = 2000;
+
 /**
  * Crea un nuevo proyecto.
  * @param {{ name: string, description?: string }} params
@@ -8,6 +11,12 @@ import { supabase } from '../../lib/supabase.js';
 export async function createProject({ name, description }) {
   if (!name || name.trim() === '') {
     return { data: null, error: { message: 'El nombre del proyecto es requerido.' } };
+  }
+  if (name.trim().length > MAX_NAME_LENGTH) {
+    return { data: null, error: { message: `El nombre no puede exceder ${MAX_NAME_LENGTH} caracteres.` } };
+  }
+  if (description && description.trim().length > MAX_DESCRIPTION_LENGTH) {
+    return { data: null, error: { message: `La descripción no puede exceder ${MAX_DESCRIPTION_LENGTH} caracteres.` } };
   }
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -56,6 +65,9 @@ export async function listProjects() {
 export async function createTask({ name, projectId, parentTaskId }) {
   if (!name || name.trim() === '') {
     return { data: null, error: { message: 'El nombre de la tarea es requerido.' } };
+  }
+  if (name.trim().length > MAX_NAME_LENGTH) {
+    return { data: null, error: { message: `El nombre no puede exceder ${MAX_NAME_LENGTH} caracteres.` } };
   }
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -112,6 +124,9 @@ export async function listTasks(projectId) {
 export async function createSubtask({ name, parentTaskId }) {
   if (!name || name.trim() === '') {
     return { data: null, error: { message: 'El nombre de la subtarea es requerido.' } };
+  }
+  if (name.trim().length > MAX_NAME_LENGTH) {
+    return { data: null, error: { message: `El nombre no puede exceder ${MAX_NAME_LENGTH} caracteres.` } };
   }
 
   // Obtener el project_id del padre

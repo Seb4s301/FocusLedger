@@ -179,3 +179,17 @@ CREATE POLICY "Users can manage their own notes"
 CREATE TRIGGER trg_notes_updated_at
     BEFORE UPDATE ON notes
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ---------------------------------------------------------------------------
+-- 8. Función auxiliar: buscar user_id por email (solo service role)
+-- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_user_id_by_email(p_email TEXT)
+RETURNS UUID
+LANGUAGE sql
+SECURITY DEFINER
+AS $$
+  SELECT id FROM auth.users WHERE email = p_email LIMIT 1;
+$$;
+
+REVOKE ALL ON FUNCTION get_user_id_by_email FROM authenticated;
+GRANT EXECUTE ON FUNCTION get_user_id_by_email TO service_role;

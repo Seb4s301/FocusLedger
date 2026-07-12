@@ -3,6 +3,7 @@
 .env.local
 .env.*.local
 backend/.env
+backend/.env.*
 # .env.example se trackea intencionalmente (template de vars necesarias)
 
 ARCHITECTURE.md

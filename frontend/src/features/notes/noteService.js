@@ -1,5 +1,7 @@
 import { supabase } from '../../lib/supabase.js';
 
+const MAX_CONTENT_LENGTH = 5000;
+
 /**
  * noteService.js
  *
@@ -16,6 +18,9 @@ import { supabase } from '../../lib/supabase.js';
 export async function createNote({ content }) {
   if (!content || content.trim() === '') {
     return { data: null, error: { message: 'El contenido de la nota no puede estar vacío.' } };
+  }
+  if (content.trim().length > MAX_CONTENT_LENGTH) {
+    return { data: null, error: { message: `El contenido no puede exceder ${MAX_CONTENT_LENGTH} caracteres.` } };
   }
 
   const { data: { user } } = await supabase.auth.getUser();
