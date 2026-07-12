@@ -1,17 +1,26 @@
 import { useState, useEffect } from 'react';
 import { createTransaction, listTransactions, deleteTransaction } from '../features/finance/financeService.js';
 
-const CATEGORIES = [
+const INCOME_CATEGORIES = [
+  'Salario',
+  'Freelance',
+  'Inversiones',
+  'Ventas',
+  'Reembolsos',
+  'Otros ingresos',
+];
+
+const EXPENSE_CATEGORIES = [
   'Comida',
   'Transporte',
   'Salud',
   'Hogar',
   'Entretenimiento',
   'Servicios',
-  'Salario',
-  'Freelance',
-  'Inversiones',
-  'Otro',
+  'Educación',
+  'Ropa',
+  'Suscripciones',
+  'Otros gastos',
 ];
 
 function getTodayDate() {
@@ -20,7 +29,7 @@ function getTodayDate() {
 
 const initialForm = {
   amount: '',
-  category: CATEGORIES[0],
+  category: INCOME_CATEGORIES[0],
   type: 'income',
   date: getTodayDate(),
   description: '',
@@ -114,7 +123,11 @@ function Finances() {
           {/* Switch Ingreso / Egreso */}
           <div style={{ marginBottom: 20 }}>
             <div
-              onClick={() => setForm(prev => ({ ...prev, type: prev.type === 'income' ? 'expense' : 'income' }))}
+              onClick={() => setForm(prev => {
+                const newType = prev.type === 'income' ? 'expense' : 'income';
+                const newCategories = newType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+                return { ...prev, type: newType, category: newCategories[0] };
+              })}
               style={{
                 display: 'inline-flex',
                 background: 'var(--bg-secondary)',
@@ -182,7 +195,7 @@ function Finances() {
                 required
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-main)', boxSizing: 'border-box', fontSize: 14 }}
               >
-                {CATEGORIES.map(cat => (
+                {(form.type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
