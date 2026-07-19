@@ -4,7 +4,8 @@ FocusLedger es una aplicación web personal para gestionar finanzas, tareas, pro
 
 - **Repositorio:** https://github.com/Seb4s301/FocusLedger
 - **Dominio de producción:** focusedger.sebascasavilca.lat
-- **Backend en producción:** Railway (auto-deploy desde `master`)
+- **Backend en producción:** Azure App Service + Railway (auto-deploy desde `master`)
+- **Frontend en producción:** Azure Static Web Apps
 
 ---
 
@@ -27,8 +28,9 @@ FocusLedger es una aplicación web personal para gestionar finanzas, tareas, pro
 | Frontend | React + Vite |
 | Backend | Python + Flask + Gunicorn |
 | Base de datos | Supabase (PostgreSQL) |
-| Hosting Frontend | GitHub Pages |
-| Hosting Backend | Railway |
+| Hosting Frontend | Azure Static Web Apps |
+| Hosting Backend | Azure App Service |
+| CI/CD | GitHub Actions |
 | DNS | Cloudflare |
 
 ---
@@ -39,7 +41,8 @@ FocusLedger es una aplicación web personal para gestionar finanzas, tareas, pro
 FocusLedger/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml              # GitHub Actions → GitHub Pages
+│       ├── deploy.yml              # GitHub Actions → GitHub Pages
+│       └── azure-deploy.yml        # GitHub Actions → Azure Static Web Apps
 ├── CNAME                            # Dominio personalizado (autogenerado por GitHub)
 ├── .gitignore
 ├── ARCHITECTURE.md
@@ -144,9 +147,52 @@ YOUTUBE_API_KEY=tu-api-key-de-youtube
 
 ---
 
-## Despliegue
+## Despliegue en Azure
 
-### Frontend → GitHub Pages
+FocusLedger está desplegado en Microsoft Azure utilizando los siguientes servicios:
+
+| Servicio | Recurso | URL |
+|----------|---------|-----|
+| Azure App Service | focusledger-api | https://focusledger-api.azurewebsites.net |
+| Azure Static Web Apps | focusledger-web | https://happy-moss-0f9b3ad0f.7.azurestaticapps.net |
+| Resource Group | focusledger-rg | East US / East US 2 |
+
+### Recursos en Azure Portal
+
+#### Resource Group — Todos los recursos desplegados
+
+![Resource Group](FocusLedgerAzure/Captura%20de%20pantalla%202026-07-19%20114028.png)
+
+#### Backend — Azure App Service (Python 3.11, B1 Linux)
+
+![Backend App Service](FocusLedgerAzure/Captura%20de%20pantalla%202026-07-19%20114505.png)
+
+#### Frontend — Azure Static Web Apps (conectado a GitHub)
+
+![Frontend Static Web App](FocusLedgerAzure/Captura%20de%20pantalla%202026-07-19%20114411.png)
+
+### Sitio funcionando en Azure
+
+#### Login
+
+![Login Page](FocusLedgerAzure/Captura%20de%20pantalla%202026-07-19%20114430.png)
+
+#### Dashboard
+
+![Dashboard](FocusLedgerAzure/Captura%20de%20pantalla%202026-07-19%20114443.png)
+
+### CI/CD con GitHub Actions
+
+El frontend se despliega automáticamente en cada push a `master` mediante GitHub Actions:
+
+- **Workflow:** `.github/workflows/azure-deploy.yml`
+- **Build:** Vite genera el bundle en `frontend/dist`
+- **Deploy:** Azure Static Web Apps sube el build resultante
+- **Variables de entorno:** Configuradas como GitHub Secrets y creadas como `.env` durante el build
+
+---
+
+### Frontend → GitHub Pages (legacy)
 
 - Se dispara automáticamente en cada `git push` a `master` vía `.github/workflows/deploy.yml`.
 - Requiere que **Settings → Pages → Source** esté en **"GitHub Actions"** (no "Deploy from a branch").
